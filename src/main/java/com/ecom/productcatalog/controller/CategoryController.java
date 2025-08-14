@@ -27,21 +27,21 @@ public class CategoryController {
     }
     @PostMapping("/api/public/categories")
     public ResponseEntity<CategoryDTO> createCategory(@Valid @RequestBody CategoryDTO categoryDTO){
-        CategoryDTO savedCategoryDtO = categoryService.createCategory(categoryDTO);
-        return new ResponseEntity<>(savedCategoryDtO, HttpStatus.OK);
+        CategoryDTO savedCategoryDTO = categoryService.createCategory(categoryDTO);
+        return new ResponseEntity<>(savedCategoryDTO, HttpStatus.OK);
     }
     @DeleteMapping("/api/admin/categories/{categoryId}")
     //@RequestMapping(value = "/api" , method = RequestMethod.GET)
-    public ResponseEntity<String> deleteCategory(@PathVariable Long categoryId){
+    public ResponseEntity<CategoryDTO> deleteCategory(@PathVariable Long categoryId){
 
-           String status = categoryService.deleteCategory(categoryId);
-           return ResponseEntity.status(HttpStatus.OK).body(status);
+           CategoryDTO deletedCategory = categoryService.deleteCategory(categoryId);
+           return new ResponseEntity<>(deletedCategory, HttpStatus.OK);
     }
 
     @PutMapping("/api/admin/categories/{categoryId}")
-    public ResponseEntity<String> updateCategory(@PathVariable Long categoryId , @RequestBody Category updatedCategory) {
+    public ResponseEntity<CategoryDTO> updateCategory(@PathVariable Long categoryId , @RequestBody CategoryDTO updatedCategoryDTO) {
 
-            Category savedCategory = categoryService.updateCategory(categoryId, updatedCategory);
-            return new ResponseEntity<>("Category with category id: " + categoryId, HttpStatus.OK);
+            CategoryDTO savedCategoryDTO = categoryService.updateCategory(categoryId, updatedCategoryDTO);
+            return new ResponseEntity<>(savedCategoryDTO, HttpStatus.OK);
     }
 }
