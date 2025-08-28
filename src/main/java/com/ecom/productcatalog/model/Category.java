@@ -1,38 +1,40 @@
 package com.ecom.productcatalog.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+
+import java.util.List;
 
 @Entity(name = "categories")// to rename the table name in the h2 database earlier it was the same as the classname
 public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-    private Long categoryID;
+    @Column(name = "category_ID")
+    private Long categoryId;
 
     @NotBlank
     @Size(min =5, message = "Category name must contain atleast 5 characters")
     private String categoryName;
-
-    public Category(Long categoryId, String categoryName) {
-        this.categoryID = categoryId;
-        this.categoryName = categoryName;
-    }
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    private List<Product> products;
 
     public Category() {
     }
 
-    public Long getCategoryID() {
-        return categoryID;
+    public Category(Long categoryId, String categoryName, List<Product> products) {
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
+        this.products = products;
     }
 
-    public void setCategoryID(Long categoryID) {
-        this.categoryID = categoryID;
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 
     public @NotBlank @Size(min = 5, message = "Category name must contain atleast 5 characters") String getCategoryName() {
@@ -41,5 +43,13 @@ public class Category {
 
     public void setCategoryName(@NotBlank @Size(min = 5, message = "Category name must contain atleast 5 characters") String categoryName) {
         this.categoryName = categoryName;
+    }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 }
